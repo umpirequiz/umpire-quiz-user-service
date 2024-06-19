@@ -9,17 +9,21 @@ import nl.wc.userservice.model.User;
 import nl.wc.userservice.util.PassUtil;
 import nl.wc.userservice.util.TokenUtil;
 
+import java.util.List;
+
 @Dependent
 public class UserService {
     private final UserDao dao;
 
     private final TokenUtil tokenUtil;
+    private final PassUtil passUtil;
     private static final String PASSWORD_RETURN_VALUE = "*****";
 
     @Inject
-    UserService(UserDao dao, TokenUtil tokenUtil) {
+    UserService(UserDao dao, TokenUtil tokenUtil, PassUtil passUtil) {
         this.dao = dao;
         this.tokenUtil = tokenUtil;
+        this.passUtil = passUtil;
     }
 
     public User createUser(User u) {
@@ -27,7 +31,7 @@ public class UserService {
         if (dao.userExists(u.getUsername())) {
             throw new UserExistsException("The username " + u.getUsername() + ", is already taken");
         }
-        u.setPassword(PassUtil.digest(u.getUsername(), u.getPassword()));
+        u.setPassword(passUtil.digest(u.getUsername(), u.getPassword()));
         u = dao.saveUser(u);
         u.setPassword(PASSWORD_RETURN_VALUE);
         return u;
@@ -37,7 +41,7 @@ public class UserService {
         if (u.getId() != id) {
             throw new UserIdsDontMatchException("The following ids are not the same: Id: " + id + ", User.Id: " + u.getId());
         }
-        u.setPassword(PassUtil.digest(u.getUsername(), u.getPassword()));
+        u.setPassword(passUtil.digest(u.getUsername(), u.getPassword()));
         u = dao.saveUser(u);
         u.setPassword(PASSWORD_RETURN_VALUE);
         u.setToken(tokenUtil.issueToken(u));
@@ -45,7 +49,7 @@ public class UserService {
     }
 
     public User login(User u) {
-        u = dao.findByUsernameAndPassword(u.getUsername(), PassUtil.digest(u.getUsername(), u.getPassword()));
+        u = dao.findByUsernameAndPassword(u.getUsername(), passUtil.digest(u.getUsername(), u.getPassword()));
         u.setPassword(PASSWORD_RETURN_VALUE);
         u.setToken(tokenUtil.issueToken(u));
         return u;
@@ -59,4 +63,7 @@ public class UserService {
         return dao.findById(id);
     }
 
+    public List<User> getAllUsers() {
+        return dao.getAllUsers();
+    }
 }

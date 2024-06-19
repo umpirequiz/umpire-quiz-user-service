@@ -39,7 +39,7 @@ public class UserResource {
         return userService.getUser(id);
     }
 
-    @POST
+    @PUT
     @Produces(APPLICATION_JSON)
     @Consumes(APPLICATION_JSON)
     public User saveUser(User u) {

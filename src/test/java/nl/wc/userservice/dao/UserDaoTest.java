@@ -161,4 +161,20 @@ class UserDaoTest {
         verify(queryMock, times(1))
                 .getResultList();
     }
+
+    @Test
+    void getAllUsers() {
+        List<User> users = List.of(new User(1L, "peter", "peter"), new User(1L, "karel", "karel"));
+        when(emMock.createQuery(any(), eq(User.class)))
+                .thenReturn(queryMock);
+        when(queryMock.getResultList())
+                .thenReturn(users);
+
+        assertThat(sut.getAllUsers())
+                .isEqualTo(users);
+        verify(emMock, times(1))
+                .createQuery(any(), eq(User.class));
+        verify(queryMock, times(1))
+                .getResultList();
+    }
 }

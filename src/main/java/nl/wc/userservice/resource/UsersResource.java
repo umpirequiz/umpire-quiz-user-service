@@ -5,6 +5,8 @@ import jakarta.ws.rs.*;
 import nl.wc.userservice.model.User;
 import nl.wc.userservice.service.UserService;
 
+import java.util.List;
+
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/auth")
@@ -25,6 +27,11 @@ public class UsersResource {
     public User register(User u) {
         u = userService.createUser(u);
         return u;
+    }
+
+    @GET
+    public List<User> users() {
+        return userService.getAllUsers();
     }
 
     @POST

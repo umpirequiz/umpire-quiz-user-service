@@ -51,4 +51,9 @@ public class UserDao {
                 .setParameter("password", password)
                 .getSingleResult();
     }
+
+    public List<User> getAllUsers() {
+        return em.createQuery("select u from User u", User.class)
+                .getResultList();
+    }
 }

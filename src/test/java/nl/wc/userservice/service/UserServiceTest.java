@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,6 +27,9 @@ class UserServiceTest {
 
     @Mock
     private TokenUtil tokenUtilMock;
+
+    @Mock
+    private PassUtil passUtilMock;
 
     @InjectMocks
     private UserService sut;
@@ -90,17 +95,21 @@ class UserServiceTest {
 
     @Test
     void login() {
-        User u = new User();
-        u.setUsername("peter");
-        u.setPassword(PassUtil.digest(u.getUsername(), u.getPassword()));
+        when(passUtilMock.digest(anyString(), anyString()))
+                .thenReturn("hashed_password");
+        User u = new User(1L, "peter", "peter");
+        u.setPassword(passUtilMock.digest(u.getUsername(), u.getPassword()));
 
         when(userDaoMock.findByUsernameAndPassword(any(String.class), any(String.class)))
                 .thenReturn(u);
-        when(tokenUtilMock.issueToken(any(User.class))).thenReturn("jtw-token");
+        when(tokenUtilMock.issueToken(any(User.class)))
+                .thenReturn("jtw-token");
 
         sut.login(u);
-        verify(userDaoMock, times(1)).findByUsernameAndPassword(any(String.class), any(String.class));
-        verify(tokenUtilMock, times(1)).issueToken(any(User.class));
+        verify(userDaoMock, times(1))
+                .findByUsernameAndPassword(any(String.class), any(String.class));
+        verify(tokenUtilMock, times(1))
+                .issueToken(any(User.class));
     }
 
     @Test
@@ -125,5 +134,14 @@ class UserServiceTest {
                 .isEqualTo(u);
 
 
+    }
+
+    @Test
+    void getAllUsers() {
+        List<User> users = List.of(new User(1L, "peter", "peter"));
+        when(userDaoMock.getAllUsers())
+                .thenReturn(users);
+
+        assertThat(sut.getAllUsers()).isEqualTo(users);
     }
 }

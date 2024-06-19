@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -59,5 +61,17 @@ class UsersResourceTest {
     void userResource() {
         UserResource uR = userResourceMock.with(1);
         assertThat(sut.toUserResource(1)).isEqualTo(uR);
+    }
+
+    @Test
+    void users() {
+        List<User> users = List.of(new User(1L, "test", "test"));
+        when(userServiceMock.getAllUsers())
+                .thenReturn(users);
+
+        assertThat(sut.users())
+                .isEqualTo(users);
+        verify(userServiceMock, times(1))
+                .getAllUsers();
     }
 }

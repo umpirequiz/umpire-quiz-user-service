@@ -15,11 +15,14 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 public class TokenUtil {
 
 
-    private final Logger logger;
+    private Logger logger;
 
     @Inject
     public TokenUtil(Logger logger) {
         this.logger = logger;
+    }
+
+    public TokenUtil() {
     }
 
     public String issueToken(User user) {
