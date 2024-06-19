@@ -14,9 +14,6 @@ public class UserResource {
     private UserService userService;
     private int id;
 
-    public UserResource() {
-    }
-
     @Inject
     public UserResource(UserService userService) {
         this.userService = userService;
@@ -25,6 +22,10 @@ public class UserResource {
     public UserResource with(int id) {
         this.id = id;
         return this;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     @DELETE

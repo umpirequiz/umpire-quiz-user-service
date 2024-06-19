@@ -2,10 +2,10 @@ package nl.wc.userservice.util;
 
 import com.ibm.websphere.security.jwt.*;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import nl.wc.userservice.exceptions.TokenException;
 import nl.wc.userservice.model.User;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.ibm.websphere.security.jwt.Claims.*;
 import static java.time.Instant.now;
@@ -15,7 +15,12 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 public class TokenUtil {
 
 
-    private final Logger logger = LoggerFactory.getLogger(TokenUtil.class.getName());
+    private final Logger logger;
+
+    @Inject
+    public TokenUtil(Logger logger) {
+        this.logger = logger;
+    }
 
     public String issueToken(User user) {
         try {

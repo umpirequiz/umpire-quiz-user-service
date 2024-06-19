@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -16,6 +17,9 @@ class UsersResourceTest {
 
     @Mock
     private UserService userServiceMock;
+
+    @Mock
+    private UserResource userResourceMock;
 
     @InjectMocks
     private UsersResource sut;
@@ -38,5 +42,22 @@ class UsersResourceTest {
         sut.login(new User());
 
         verify(userServiceMock, times(1)).login(any(User.class));
+    }
+
+    @Test
+    void toUserResource() {
+        when(userResourceMock.with(anyInt()))
+                .thenReturn(userResourceMock);
+
+        assertThat(sut.toUserResource(1))
+                .isEqualTo(userResourceMock);
+        verify(userResourceMock, times(1))
+                .with(anyInt());
+    }
+
+    @Test
+    void userResource() {
+        UserResource uR = userResourceMock.with(1);
+        assertThat(sut.toUserResource(1)).isEqualTo(uR);
     }
 }

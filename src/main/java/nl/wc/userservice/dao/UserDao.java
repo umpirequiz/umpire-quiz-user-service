@@ -1,4 +1,4 @@
-package nl.wc.userservice.repository;
+package nl.wc.userservice.dao;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
@@ -9,11 +9,11 @@ import nl.wc.userservice.model.User;
 import java.util.List;
 
 @ApplicationScoped
-public class UserRepo {
+public class UserDao {
     @PersistenceContext
     private EntityManager em;
 
-    UserRepo() {
+    UserDao() {
     }
 
     @Transactional
@@ -30,6 +30,13 @@ public class UserRepo {
         return em.createQuery("select u from User u where u.id= :id", User.class)
                 .setParameter("id", id)
                 .getSingleResult();
+    }
+
+    public boolean userExists(String username) {
+        return !em.createQuery("select u from User u where u.username =: u", User.class)
+                .setParameter("u", username)
+                .getResultList()
+                .isEmpty();
     }
 
     public List<User> findByName(String input) {
