@@ -11,7 +11,7 @@ pipeline {
     PREV_VERSION = getHighestSemanticVersion().toString()
     SONAR_BREAKS_BUILD = true
     SONAR_PROJECT_KEY = 'Umpire-Quiz-user-service'
-    SONAR_PROJECT_NAME = 'Umpire Quiz-user-service'
+    SONAR_PROJECT_NAME = 'Umpire Quiz User Service'
   }
   tools {
     maven 'Maven 3.9.6'
