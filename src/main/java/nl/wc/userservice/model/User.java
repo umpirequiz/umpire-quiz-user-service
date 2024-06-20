@@ -1,15 +1,17 @@
 package nl.wc.userservice.model;
 
 import jakarta.persistence.*;
+import jdk.jfr.Name;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
+@Table(name="User_Accounts")
 public class User {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false, unique = true)
     private String username;
     @Column(length = 256, nullable = false)
     private String password;

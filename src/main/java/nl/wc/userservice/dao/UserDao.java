@@ -33,7 +33,7 @@ public class UserDao {
     }
 
     public boolean userExists(String username) {
-        return !em.createQuery("select u from User u where u.username =: u", User.class)
+        return !em.createQuery("select u from User u where u.username = :u", User.class)
                 .setParameter("u", username)
                 .getResultList()
                 .isEmpty();
