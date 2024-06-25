@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import nl.wc.userservice.dao.UserDao;
 import nl.wc.userservice.exceptions.UserExistsException;
 import nl.wc.userservice.exceptions.UserIdsDontMatchException;
+import nl.wc.userservice.model.Auth;
 import nl.wc.userservice.model.User;
 import nl.wc.userservice.util.PassUtil;
 import nl.wc.userservice.util.TokenUtil;
@@ -44,15 +45,15 @@ public class UserService {
         u.setPassword(passUtil.digest(u.getUsername(), u.getPassword()));
         u = dao.saveUser(u);
         u.setPassword(PASSWORD_RETURN_VALUE);
-        u.setToken(tokenUtil.issueToken(u));
         return u;
     }
 
-    public User login(User u) {
-        u = dao.findByUsernameAndPassword(u.getUsername(), passUtil.digest(u.getUsername(), u.getPassword()));
-        u.setPassword(PASSWORD_RETURN_VALUE);
-        u.setToken(tokenUtil.issueToken(u));
-        return u;
+    public Auth login(String username, String password) {
+        User u = dao.findByUsernameAndPassword(username, passUtil.digest(username, password));
+        if (u == null) {
+            return null;
+        }
+        return new Auth(username,tokenUtil.issueToken(u));
     }
 
     public void deleteUser(int id) {

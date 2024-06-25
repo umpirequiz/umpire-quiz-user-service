@@ -2,6 +2,8 @@ package nl.wc.userservice.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import nl.wc.userservice.model.Auth;
+import nl.wc.userservice.model.LoginRequest;
 import nl.wc.userservice.model.User;
 import nl.wc.userservice.service.UserService;
 
@@ -36,9 +38,8 @@ public class UsersResource {
 
     @POST
     @Path("login")
-    public User login(User u) {
-        u = userService.login(u);
-        return u;
+    public Auth login(LoginRequest request) {
+        return userService.login(request.getUsername(), request.getPassword());
     }
 
     @Path("{id}")
