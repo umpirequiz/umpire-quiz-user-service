@@ -1,5 +1,7 @@
 package nl.wc.userservice.resource;
 
+import nl.wc.userservice.model.Auth;
+import nl.wc.userservice.model.LoginRequest;
 import nl.wc.userservice.model.User;
 import nl.wc.userservice.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -36,15 +38,18 @@ class UsersResourceTest {
         verify(userServiceMock, times(1)).createUser(any(User.class));
     }
 
-//    @Test
-//    void login() {
-//        when(userServiceMock.login(any(User.class)))
-//                .thenReturn(new User());
-//
-//        sut.login("peter", "peter");
-//
-//        verify(userServiceMock, times(1)).login(any(User.class));
-//    }
+    @Test
+    void login() {
+        when(userServiceMock.login(anyString(), anyString()))
+                .thenReturn(new Auth());
+        LoginRequest request = new LoginRequest();
+        request.setUsername("peter");
+        request.setPassword("peter");
+
+        sut.login(request);
+
+        verify(userServiceMock, times(1)).login(anyString(), anyString());
+    }
 
     @Test
     void toUserResource() {
