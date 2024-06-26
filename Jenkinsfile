@@ -108,7 +108,7 @@ pipeline {
         }
       }
       steps {
-        withCredentials([sshUserPrivateKey(credentialsId: 'Umpire-Quiz-Acceptatie', keyFileVariable: 'KEY', usernameVariable: 'USER'>
+        withCredentials([sshUserPrivateKey(credentialsId: 'Umpire-Quiz-Acceptatie', keyFileVariable: 'KEY', usernameVariable: 'USER')]) {
           sh 'ssh -i $KEY $USER@192.168.178.240 ~/update-Quiz.sh'
         }
       }
