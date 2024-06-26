@@ -23,6 +23,8 @@
     <httpEndpoint id="defaultHttpEndpoint" httpPort="9080" httpsPort="9443"/>
     <applicationManager autoExpand="true"/>
 
+    <webApplication contextRoot="/" location="user-service.war"/>
+
     <library id="MySQLLib">
         <fileset dir="${shared.resource.dir}/" includes="mysql*.jar"/>
     </library>
