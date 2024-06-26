@@ -96,14 +96,20 @@ pipeline {
       steps {
         script {
           id = release()
-//           addToRelease(id,
-//                        "compose.yaml",
-//                        "./target/classes/compose.yaml",
-//                        "application/yaml")
-//           addToRelease(id,
-//                        "HelloWorld.jar",
-//                        "./target/HelloWorld-jar-with-dependencies.jar",
-//                        "application/java-archive")
+        }
+      }
+    }
+
+    stage('Update Gebruikers Test Omgeving') {
+      when {
+        allOf {
+          not { equals(actual: "${VERSION}", expected: "${PREV_VERSION}") }
+          branch 'main'
+        }
+      }
+      steps {
+        withCredentials([sshUserPrivateKey(credentialsId: 'Umpire-Quiz-Acceptatie', keyFileVariable: 'KEY', usernameVariable: 'USER'>
+          sh 'ssh -i $KEY $USER@192.168.178.240 ~/update-Quiz.sh'
         }
       }
     }
