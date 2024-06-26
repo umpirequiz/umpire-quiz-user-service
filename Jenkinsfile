@@ -68,23 +68,23 @@ pipeline {
       }
     }
 
-//     stage('Docker push') {
-//       when {
-//         allOf {
-//           not { equals(actual: "${VERSION}", expected: "${PREV_VERSION}") }
-//           branch 'main'
-//         }
-//       }
-//       steps {
-//         withCredentials([usernamePassword(credentialsId: 'Harbor_Robot', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-//           sh 'mvn docker:build\
-//                   docker:push\
-//                   -Ddocker.push.username=$USERNAME\
-//                   -Ddocker.push.password=$PASSWORD'
-//         }
-//         sh 'mvn docker:remove'
-//       }
-//     }
+    stage('Docker push') {
+      when {
+        allOf {
+          not { equals(actual: "${VERSION}", expected: "${PREV_VERSION}") }
+          branch 'main'
+        }
+      }
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'Harbor_Robot', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+          sh 'mvn docker:build\
+                  docker:push\
+                  -Ddocker.push.username=$USERNAME\
+                  -Ddocker.push.password=$PASSWORD'
+        }
+        sh 'mvn docker:remove'
+      }
+    }
 
     stage('Github release') {
       when {
