@@ -144,6 +144,29 @@
         <finalName>user-service</finalName>
         <plugins>
             <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.15.8</version>
+                <configuration>
+                    <mutators>
+                        <mutator>STRONGER</mutator>
+                    </mutators>
+                    <outputFormats>
+                        <format>XML</format>
+                        <format>HTML</format>
+                    </outputFormats>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>pitest</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>mutationCoverage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.44.0</version>
