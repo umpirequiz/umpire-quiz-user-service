@@ -6,6 +6,8 @@ import jakarta.ws.rs.container.ContainerResponseFilter;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.ext.Provider;
 
+import static nl.wc.userservice.util.EnvironmentUtil.getFrontendUrl;
+
 @Provider // activate this filter, register in this REST app.
 public class CorsFilter implements ContainerResponseFilter {
 
@@ -13,7 +15,7 @@ public class CorsFilter implements ContainerResponseFilter {
     public void filter(ContainerRequestContext request, ContainerResponseContext response) {
         MultivaluedMap<String, Object> headers = response.getHeaders();
 
-        headers.add("Access-Control-Allow-Origin", "http://localhost:4200");
+        headers.add("Access-Control-Allow-Origin", getFrontendUrl());
         headers.add("Access-Control-Allow-Credentials", "true");
         headers.add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
         headers.add("Access-Control-Expose-Headers", "authorization"); // so scripts are allowed to read this header(s)
