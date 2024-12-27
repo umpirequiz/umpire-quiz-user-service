@@ -1,10 +1,10 @@
 FROM icr.io/appcafe/open-liberty:kernel-slim-java21-openj9-ubi-minimal
-USER root
-COPY --chown=0:0 --chmod=755 /src/main/liberty/config /config
-COPY --chown=0:0 --chmod=755 /target/lib/*.jar /opt/ol/wlp/usr/shared/resources
+
+
+COPY --chown=1001:0 target/lib/mysql-connector*.jar /opt/ol/wlp/usr/shared/resources/mysql-connector.jar
+#ENV CLASSPATH=/opt/ol/wlp/usr/shared/resources/mysql-connector-java.jar:${CLASSPATH}
+COPY --chown=1001:0 /src/main/liberty/config /config
+
 RUN features.sh
-
-COPY --chown=0:0 --chmod=755 /target/user-service.war /config/apps
+COPY --chown=1001:0 target/*.war /config/dropins
 RUN configure.sh
-
-USER 1001
