@@ -17,8 +17,9 @@ services:
     environment:
       MYSQL_HOSTNAME: "user-service-db"
       MYSQL_PORT: 3306
-      MYSQL_PASSWORD: root
       MYSQL_DATABASE: "users-db"
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USE_SSL: "true"
     depends_on:
       user-service-db:
         condition: service_healthy
@@ -33,7 +34,7 @@ services:
       MYSQL_ROOT_PASSWORD: "root"
       MYSQL_DATABASE: "users-db"
     ports:
-      - "3306:3306"
+      - "3307:3306"
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       interval: 2s
