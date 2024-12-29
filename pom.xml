@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>user-service</artifactId>
-    <version>0.1.1</version>
+    <version>0.4.0</version>
     <name>user-service</name>
     <packaging>war</packaging>
 
@@ -183,18 +183,16 @@
                 <configuration>
                     <images>
                         <image>
-                            <removeNamePattern>opleiding-harbor.bcverdouw.nl/wc/umpire_quiz_userservice:**
-                            </removeNamePattern>
-                            <name>opleiding-harbor.bcverdouw.nl/wc/umpire_quiz_userservice</name>
+                            <removeNamePattern>bramjanssens/umpire-quiz-user-service:**</removeNamePattern>
+                            <name>bramjanssens/umpire-quiz-user-service</name>
                             <build>
                                 <dockerFile>${project.basedir}/Dockerfile</dockerFile>
                                 <tags>
                                     <tag>latest</tag>
                                     <tag>${project.version}</tag>
-                                    <tag>${majorVersion}-latest</tag>
-                                    <tag>${majorVersion}.${minorVersion}-latest</tag>
                                 </tags>
                             </build>
+                            <registry>docker.io</registry>
                         </image>
                     </images>
                 </configuration>
