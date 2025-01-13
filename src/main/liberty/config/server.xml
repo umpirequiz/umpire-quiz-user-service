@@ -2,28 +2,27 @@
 <server description="new server">
     <logging traceSpecification="com.ibm.websphere.security.jwt.*=all:com.ibm.ws.security.*=all:*=info"/>
     <variable name="MYSQL_HOSTNAME" defaultValue="localhost"/>
-    <variable name="MYSQL_USERNAME" defaultValue="root"/>
-    <variable name="MYSQL_PASSWORD" defaultValue=""/>
     <variable name="MYSQL_PORT" defaultValue="3306"/>
-    <variable name="MYSQL_DATABASE" defaultValue="users"/>
+    <variable name="MYSQL_ROOT_PASSWORD" defaultValue="root"/>
+    <variable name="MYSQL_DATABASE" defaultValue="users-db"/>
     <variable name="MYSQL_USE_SSL" defaultValue="true"/>
     <variable name="JWT_SHAREDKEY" defaultValue="mySecret"/>
 
     <featureManager>
         <feature>restfulWS-3.1</feature>
+        <feature>cdi-4.0</feature>
         <feature>jsonb-3.0</feature>
         <feature>xmlBinding-4.0</feature>
         <feature>mpOpenAPI-3.1</feature>
         <feature>persistence-3.1</feature>
         <feature>mpJwt-2.1</feature>
+        <feature>mpHealth-4.0</feature>
     </featureManager>
 
     <mpJwt id="jwt" sharedKey="${JWT_SHAREDKEY}"/>
 
-    <httpEndpoint id="defaultHttpEndpoint" httpPort="9080" httpsPort="9443"/>
+    <httpEndpoint id="defaultHttpEndpoint" httpPort="9080" httpsPort="9446"/>
     <applicationManager autoExpand="true"/>
-
-    <webApplication contextRoot="/user-api" location="user-service.war"/> 
 
     <library id="MySQLLib">
         <fileset dir="${shared.resource.dir}/" includes="mysql*.jar"/>
@@ -31,8 +30,11 @@
 
     <dataSource id="DefaultDataSource" jndiName="jdbc/mySqlDatasource">
         <jdbcDriver libraryRef="MySQLLib"/>
-        <properties serverName="${MYSQL_HOSTNAME}" portNumber="${MYSQL_PORT}" useSSL="${MYSQL_USE_SSL}"
-                    databaseName="${MYSQL_DATABASE}" user="${MYSQL_USERNAME}" password="${MYSQL_PASSWORD}"
+        <properties serverName="${MYSQL_HOSTNAME}"
+                    portNumber="${MYSQL_PORT}"
+                    databaseName="${MYSQL_DATABASE}"
+                    user="root" password="${MYSQL_ROOT_PASSWORD}"
+                    useSSL="${MYSQL_USE_SSL}" allowPublicKeyRetrieval="true"
                     serverTimezone="UTC"/>
     </dataSource>
 </server>
