@@ -151,7 +151,7 @@
     </dependencies>
 
     <build>
-        <finalName>user</finalName>
+        <finalName>user-service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.pitest</groupId>
