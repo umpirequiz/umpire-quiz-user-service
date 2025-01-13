@@ -11,7 +11,7 @@ import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@Path("/auth")
+@Path("/users")
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
 public class UsersResource {

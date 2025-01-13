@@ -2,6 +2,8 @@ package nl.wc.userservice.service;
 
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
+import jakarta.persistence.NoResultException;
+import jakarta.ws.rs.BadRequestException;
 import nl.wc.userservice.dao.UserDao;
 import nl.wc.userservice.exceptions.UserExistsException;
 import nl.wc.userservice.exceptions.UserIdsDontMatchException;
@@ -20,8 +22,7 @@ public class UserService {
     private final PassUtil passUtil;
     private static final String PASSWORD_RETURN_VALUE = "*****";
 
-    @Inject
-    UserService(UserDao dao, TokenUtil tokenUtil, PassUtil passUtil) {
+    @Inject UserService(UserDao dao, TokenUtil tokenUtil, PassUtil passUtil) {
         this.dao = dao;
         this.tokenUtil = tokenUtil;
         this.passUtil = passUtil;
@@ -49,11 +50,16 @@ public class UserService {
     }
 
     public Auth login(String username, String password) {
-        User u = dao.findByUsernameAndPassword(username, passUtil.digest(username, password));
-        if (u == null) {
-            return null;
+
+        try {
+            var u = dao.findByUsernameAndPassword(username, passUtil.digest(username, password));
+            if (u == null) {
+                return null;
+            }
+            return new Auth(username, tokenUtil.issueToken(u));
+        } catch (NoResultException e) {
+            throw new BadRequestException("User not found", e);
         }
-        return new Auth(username,tokenUtil.issueToken(u));
     }
 
     public void deleteUser(int id) {
